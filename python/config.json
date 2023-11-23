@@ -1,0 +1,20 @@
+{
+    "clusters": [
+      {
+        "subscription_id": "sid",
+        "resource_group_name": "kusto-workload",
+        "cluster_name": "adx-in-vnet"
+      },
+      {
+        "subscription_id": "sid",
+        "resource_group_name": "kusto-workload",
+        "cluster_name": "adx-in-vnet-2"
+      },
+      {
+        "subscription_id": "sid",
+        "resource_group_name": "kusto-workload",
+        "cluster_name": "adx-in-vnet-3"
+      }
+    ],
+    "vnet_state": "disabled"
+  }
