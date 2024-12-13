@@ -9,24 +9,27 @@ with open('config.json', 'r') as config_file:
     config = json.load(config_file)
 
 CLUSTERS = config['clusters']
-if config['vnet_state'] == 'enabled':
-    VNET_STATE = VnetState.ENABLED
-else:
-    VNET_STATE = VnetState.DISABLED
 
 # Authenticate with Azure using interactive authentication
 credential = DefaultAzureCredential()
 
-def MigrateCluster(VNET_STATE, credential, cluster):
-    kusto_client = KustoManagementClient(credential, cluster["subscription_id"])
+def MigrateCluster(credential, cluster):
+    kusto_client = KustoManagementClient(credential, cluster['subscription_id'])
 
+	# Get the current VNET state
+    state = VnetState.DISABLED
+    if cluster['vnet_state'] == 'enabled':
+        state = VnetState.ENABLED
+	
     # Get the cluster config
     clusterConfig = kusto_client.clusters.get(
-        resource_group_name=cluster["resource_group_name"],
-        cluster_name=cluster["cluster_name"]
+        resource_group_name=cluster['resource_group_name'],
+        cluster_name=cluster['cluster_name']
     )
 
-    clusterConfig.virtual_network_configuration.state=VNET_STATE
+    clusterConfig.virtual_network_configuration.state=state
+    if 'allowed_ips' in cluster and state == VnetState.DISABLED:
+        clusterConfig.allowed_ip_range_list = cluster['allowed_ips']
 
     # Create a ClusterUpdate object with the desired changes
     cluster_update = ClusterUpdate.from_dict(clusterConfig.as_dict())
@@ -35,8 +38,8 @@ def MigrateCluster(VNET_STATE, credential, cluster):
 
     # Update the Kusto cluster
     poller = kusto_client.clusters.begin_update(
-        resource_group_name=cluster["resource_group_name"],
-        cluster_name=cluster["cluster_name"],
+        resource_group_name=cluster['resource_group_name'],
+        cluster_name=cluster['cluster_name'],
         parameters=cluster_update
     )
     
@@ -45,8 +48,8 @@ def MigrateCluster(VNET_STATE, credential, cluster):
 # Start the migration of all clusters
 allpoller = {}
 for cluster in CLUSTERS:
-    poller = MigrateCluster(VNET_STATE, credential, cluster)
-    allpoller[cluster["cluster_name"]] = poller
+    poller = MigrateCluster(credential, cluster)
+    allpoller[cluster['cluster_name']] = poller
 
 # Wait for the migration to complete
 workTodo = True
