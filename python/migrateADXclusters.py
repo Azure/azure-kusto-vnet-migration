@@ -28,7 +28,7 @@ def MigrateCluster(credential, cluster):
     )
 
     clusterConfig.virtual_network_configuration.state=state
-    if 'allowed_ips' in cluster and state == VnetState.DISABLED:
+    if 'allowed_ips' in cluster and state == 'Disabled':
         clusterConfig.allowed_ip_range_list = cluster['allowed_ips']
 
     # Create a ClusterUpdate object with the desired changes
