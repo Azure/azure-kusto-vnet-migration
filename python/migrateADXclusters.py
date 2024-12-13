@@ -30,6 +30,7 @@ def MigrateCluster(credential, cluster):
     clusterConfig.virtual_network_configuration.state=state
     if 'allowed_ips' in cluster and state == 'Disabled':
         clusterConfig.allowed_ip_range_list = cluster['allowed_ips']
+        clusterConfig.public_network_access = 'Enabled'
 
     # Create a ClusterUpdate object with the desired changes
     cluster_update = ClusterUpdate.from_dict(clusterConfig.as_dict())
@@ -57,7 +58,7 @@ while workTodo:
     workTodo = False
     for clusterName, poller in allpoller.items():
         
-        if(poller.done()):
+        if(poller.done() or poller.status() == "Succeeded" or poller.status() == "Running"):
             print(f"Migration of {clusterName} completed. Status: {poller.status()}")
             continue
 
