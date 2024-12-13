@@ -14,17 +14,19 @@ The script uses a configuration file named `config.json` to get the list of clus
 
 ```json
 {
-    "vnet_state": "disabled",
     "clusters": [
         {
             "subscription_id": "<subscription-id-1>",
             "resource_group_name": "<resource-group-name-1>",
-            "cluster_name": "<cluster-name-1>"
+            "cluster_name": "<cluster-name-1>",
+            "vnet_state": "disabled"
         },
         {
             "subscription_id": "<subscription-id-2>",
             "resource_group_name": "<resource-group-name-2>",
-            "cluster_name": "<cluster-name-2>"
+            "cluster_name": "<cluster-name-2>",
+            "vnet_state": "disabled",
+            "allowed_ips": ["1.1.1.1", "2.2.2.2"]
         }
         // Add more clusters as needed
     ]
@@ -34,6 +36,8 @@ The script uses a configuration file named `config.json` to get the list of clus
 Replace `<subscription-id>`, `<resource-group-name>`, and `<cluster-name>` with your actual Azure subscription ID, resource group name, and cluster name respectively. You can add as many clusters as you want to the `clusters` array.
 
 The `vnet_state` field should be set to either `enabled` or `disabled` depending on whether you want to enable or disable the virtual network.
+
+The `allowed_ips` field can be configured to the list of CIDRs which are allowed to connect to the ADX cluster.
 
 ## Usage
 

@@ -58,6 +58,7 @@ while workTodo:
     for clusterName, poller in allpoller.items():
         
         if(poller.done()):
+            print(f"Migration of {clusterName} completed. Status: {poller.status()}")
             continue
 
         workTodo = True
@@ -70,12 +71,14 @@ while workTodo:
 
 # Check the status of the migration
 for clusterName, poller in allpoller.items():
-    poller_result = poller.result()
-    if poller_result.provisioning_state == "Failed":
-        print(f"Error while migrating {clusterName}... Status: {poller.status()}")
-        print(f"Error details: {poller_result.error}")
-    
-    else:
-        print(f"Migration of {clusterName} completed. Status: {poller.status()}")
+	try:
+		poller_result = poller.result()
+		if poller_result.provisioning_state == "Failed":
+			print(f"Error while migrating {clusterName}... Status: {poller.status()}")
+			print(f"Error details: {poller_result.error}")
+		else:
+			print(f"Migration of {clusterName} completed. Status: {poller.status()}")
+	except Exception as e:
+		print(f"Exception occurred while migrating {clusterName}: {str(e)}")
 
 print("Done!")
