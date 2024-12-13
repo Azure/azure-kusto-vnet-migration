@@ -17,9 +17,9 @@ def MigrateCluster(credential, cluster):
     kusto_client = KustoManagementClient(credential, cluster['subscription_id'])
 
 	# Get the current VNET state
-    state = VnetState.DISABLED
+    state = 'Disabled'
     if cluster['vnet_state'] == 'enabled':
-        state = VnetState.ENABLED
+        state = 'Enabled'
 	
     # Get the cluster config
     clusterConfig = kusto_client.clusters.get(
@@ -64,7 +64,7 @@ while workTodo:
         workTodo = True
         print(f"Migrating {clusterName}... Status: {poller.status()}")
 
-        time.sleep(10)
+        time.sleep(5)
     
     if workTodo:
         time.sleep(60)
