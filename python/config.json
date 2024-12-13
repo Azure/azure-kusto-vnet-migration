@@ -1,22 +1,22 @@
 {
     "clusters": [
       {
-        "subscription_id": "92288740-be22-448e-b3a1-697c0535e005",
-        "resource_group_name": "kusto-workload",
-        "cluster_name": "adx-in-vnet",
+        "subscription_id": "your subscription id",
+        "resource_group_name": "your resource group",
+        "cluster_name": "adx-cluster-1",
          "vnet_state": "disabled"
       },
       {
-        "subscription_id": "92288740-be22-448e-b3a1-697c0535e005",
-        "resource_group_name": "kusto-workload",
-        "cluster_name": "adx-in-vnet-2",
+        "subscription_id": "your subscription id",
+        "resource_group_name": "your resource group",
+        "cluster_name": "adx-cluster-2",
         "vnet_state": "disabled",
         "allowed_ips": ["1.1.1.1", "2.2.2.2"]
       },
       {
-        "subscription_id": "92288740-be22-448e-b3a1-697c0535e005",
-        "resource_group_name": "kusto-workload",
-        "cluster_name": "adx-in-vnet-3",
+        "subscription_id": "your subscription id",
+        "resource_group_name": "your resource group",
+        "cluster_name": "adx-cluster-3",
         "vnet_state": "enabled"
       }
     ]
