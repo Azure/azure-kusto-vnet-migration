@@ -18,7 +18,7 @@ def MigrateCluster(credential, cluster):
 
 	# Get the current VNET state
     state = 'Disabled'
-    if cluster['vnet_state'] == 'enabled':
+    if cluster['vnet_state'].lower() == 'enabled':
         state = 'Enabled'
 	
     # Get the cluster config
