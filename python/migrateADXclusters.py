@@ -11,7 +11,7 @@ with open('config.json', 'r') as config_file:
 CLUSTERS = config['clusters']
 
 # Authenticate with Azure using interactive authentication
-credential = DefaultAzureCredential()
+credential = DefaultAzureCredential(exclude_interactive_browser_credential=False)
 
 def MigrateCluster(credential, cluster):
     kusto_client = KustoManagementClient(credential, cluster['subscription_id'])
@@ -64,10 +64,10 @@ while workTodo:
         workTodo = True
         print(f"Migrating {clusterName}... Status: {poller.status()}")
 
-        time.sleep(1)
+        time.sleep(10)
     
     if workTodo:
-        time.sleep(30)
+        time.sleep(60)
 
 # Check the status of the migration
 for clusterName, poller in allpoller.items():
